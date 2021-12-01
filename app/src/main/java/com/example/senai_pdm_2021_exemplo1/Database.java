@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 public class Database extends SQLiteOpenHelper {
 
+    Thread thread;
     private Context context;
     private static final String DATABASE_NAME = "ibook.db";
     private static final int DATABASE_VERSION = 2;
@@ -30,6 +32,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        thread = null;
         String query = "CREATE TABLE " + TABLE_NAME +
                         " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_TITLE + " TEXT, " +
@@ -48,17 +51,26 @@ public class Database extends SQLiteOpenHelper {
     void addBook(String title, String author, int pages, int year){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-
-        cv.put(COLUMN_TITLE, title);
-        cv.put(COLUMN_AUTHOR, author);
-        cv.put(COLUMN_YEAR, year);
-        cv.put(COLUMN_PAGES, pages);
-        long result = db.insert(TABLE_NAME,null, cv);
-        if(result == -1){
-            Toast.makeText(context, "Cadastro não registrado!", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(context, "Cadastro registrado!", Toast.LENGTH_SHORT).show();
-        }
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(
+                        "TrabalhoFinal", "Rodando Thread addBook"
+                );
+                cv.put(COLUMN_TITLE, title);
+                cv.put(COLUMN_AUTHOR, author);
+                cv.put(COLUMN_YEAR, year);
+                cv.put(COLUMN_PAGES, pages);
+                long result = db.insert(TABLE_NAME,null, cv);
+                if(result == -1){
+                    Toast.makeText(context, "Cadastro não registrado!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(context, "Cadastro registrado!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        thread.start();
+        thread.interrupt();
     }
 
     Cursor readAllData(){
