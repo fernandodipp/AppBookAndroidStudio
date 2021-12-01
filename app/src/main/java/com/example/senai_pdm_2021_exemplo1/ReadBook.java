@@ -110,8 +110,8 @@ public class ReadBook extends AppCompatActivity {
                 book_id.add(cursor.getString(0));
                 book_title.add(cursor.getString(1));
                 book_author.add(cursor.getString(2));
-                book_editionYear.add(cursor.getString(3));
-                book_pages.add(cursor.getString(4));
+                book_editionYear.add(cursor.getString(4));
+                book_pages.add(cursor.getString(3));
             }
         }
     }
