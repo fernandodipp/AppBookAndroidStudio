@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+// SOLID - Princípio da Responsabilidade Única (S)
+// Uma classe tem que ser responsável por uma única tarefa (SALVAR O LIVRO)
 public class RegisterBook extends AppCompatActivity {
 
     EditText title_input, author_input,editionYear_input,  pages_input;
