@@ -1,4 +1,4 @@
-package com.example.senai_pdm_2021_exemplo1;
+package com.example.senai_pdm_2021_exemplo1.apresentacao;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +12,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.senai_pdm_2021_exemplo1.R;
+import com.example.senai_pdm_2021_exemplo1.dados.Database;
+import com.example.senai_pdm_2021_exemplo1.dados.DatabaseThread;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -72,6 +74,9 @@ public class ReadBook extends AppCompatActivity {
         customAdapter = new CustomAdapter(ReadBook.this, this, book_id, book_title, book_author, book_editionYear, book_pages);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ReadBook.this));
+
+        DatabaseThread runnable = new DatabaseThread(this);
+        new Thread(runnable).start();
     }
 
     @Override
